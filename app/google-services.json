@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "377337131622",
+    "project_id": "gameteambulding",
+    "storage_bucket": "gameteambulding.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377337131622:android:328f911462baee31e7b3a7",
+        "android_client_info": {
+          "package_name": "vn.edu.hcmuaf.fit.gameteambulding"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoU7ZcxJaAgZ6VrlSHqN7O5tSL-3uFy_o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377337131622:android:db50cd82ba1168eae7b3a7",
+        "android_client_info": {
+          "package_name": "vn.edu.hcmuaf.fit.teambuldinggame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoU7ZcxJaAgZ6VrlSHqN7O5tSL-3uFy_o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
