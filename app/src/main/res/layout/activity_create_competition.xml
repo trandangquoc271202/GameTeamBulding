@@ -18,10 +18,23 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <View
+                android:id="@+id/back"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@mipmap/back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_username"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="25dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_text_username"
@@ -29,38 +42,86 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="30dp"
                     android:background="@drawable/border"
                     android:hint="Tiêu đề" />
             </com.google.android.material.textfield.TextInputLayout>
-
-            <LinearLayout
+            <GridLayout
                 android:layout_width="match_parent"
-                android:layout_height="154dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:orientation="horizontal">
+                android:layout_weight="8"
+                android:alignmentMode="alignMargins"
+                android:columnCount="3"
+                android:columnOrderPreserved="false"
 
-                <EditText
-                    android:id="@+id/editTextDate"
+                android:rowCount="3">
+
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="dd/mm/yy"
-                    android:inputType="date" />
+                    android:layout_row="0"
+                    android:layout_column="0"
+                    android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/editTextDate2"
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thời gian bắt đầu"
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/dateStart"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editDateStart"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/border"
+                            android:hint="dd/mm/yy" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="00:00"
-                    android:inputType="date" />
-            </LinearLayout>
+                    android:layout_row="0"
+                    android:layout_marginEnd="15dp"
+                    android:layout_column="2"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/TextDateTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thời gian thi"
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/dateEnd"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editDateEnd"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/border"
+                            android:hint="dd/mm/yy" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </GridLayout>
 
 
         </LinearLayout>
+
+
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
