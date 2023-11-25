@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,9 @@ public class CreateCompetitionActivity extends AppCompatActivity {
     private ArrayList<String> listCriteria;
     private CriteriaAdapter criteriaAdapter;
     private ListView lv_criteria;
+    private LinearLayout linearLayout;
+    private int count;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,9 +49,9 @@ public class CreateCompetitionActivity extends AppCompatActivity {
         content = (TextInputEditText) findViewById(R.id.edit_content);
         criteria = (TextInputEditText) findViewById(R.id.edit_criteria);
         lv_criteria = (ListView) findViewById(R.id.lv_criteria);
-        updateLV();
+        linearLayout = (LinearLayout) findViewById(R.id.list_criteria);
         // Create ListView Criteria
-
+        updateLV();
         listCriteria = new ArrayList<String>();
         // End ListView Criteria
         addCriteria();
@@ -71,15 +75,17 @@ public class CreateCompetitionActivity extends AppCompatActivity {
                 listCriteria.add(criteria.getText().toString());
                 criteriaAdapter = new CriteriaAdapter(getApplicationContext(), CreateCompetitionActivity.this, listCriteria);
                 lv_criteria.setAdapter(criteriaAdapter);
-//                updateLinearLayoutHeight();
+                updateLinearLayoutHeight();
             }
         });
     }
+
     public void updateLV() {
         listCriteria = new ArrayList<String>();
         criteriaAdapter = new CriteriaAdapter(getApplicationContext(), CreateCompetitionActivity.this, listCriteria);
         lv_criteria.setAdapter(criteriaAdapter);
     }
+
     public void createCompetition() {
 
         createContest = (Button) findViewById(R.id.createCompetition);
@@ -114,20 +120,24 @@ public class CreateCompetitionActivity extends AppCompatActivity {
 
 
     }
-    private void updateLinearLayoutHeight() {
-        int totalHeight = 0;
 
-        // Kiểm tra null và chỉ tính chiều cao nếu view đã được vẽ
+    private void updateLinearLayoutHeight() {
+        int totalHeight = 300;
         for (int i = 0; i < criteriaAdapter.getCount(); i++) {
-            View childView = lv_criteria.getChildAt(i);
-            if (childView != null) {
-                totalHeight += childView.getMeasuredHeight();
-            }
+            View listItem = criteriaAdapter.getView(i, null, lv_criteria);
+            listItem.measure(
+                    View.MeasureSpec.makeMeasureSpec(lv_criteria.getWidth(), View.MeasureSpec.EXACTLY),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            );
+            totalHeight += listItem.getMeasuredHeight();
         }
 
+        // Thêm chiều cao của các đường phân cách giữa các phần tử
+        totalHeight += (lv_criteria.getDividerHeight() * (criteriaAdapter.getCount() - 1));
+
         // Lấy LayoutParams của LinearLayout và đặt chiều cao mới
-        ViewGroup.LayoutParams params = lv_criteria.getLayoutParams();
-        params.height = totalHeight + (lv_criteria.getDividerHeight() * (criteriaAdapter.getCount() - 1))+80;
+        ViewGroup.LayoutParams params = linearLayout.getLayoutParams();
+        params.height = totalHeight;
         lv_criteria.setLayoutParams(params);
     }
 }
