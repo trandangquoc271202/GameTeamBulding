@@ -1,5 +1,6 @@
 package vn.edu.hcmuaf.fit.gameteambulding.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,14 +8,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import vn.edu.hcmuaf.fit.gameteambulding.CreateCompetitionActivity;
+import vn.edu.hcmuaf.fit.gameteambulding.HomeActivity;
+import vn.edu.hcmuaf.fit.gameteambulding.R;
 import vn.edu.hcmuaf.fit.gameteambulding.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
+    private CardView createCompetition;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -23,7 +29,7 @@ public class HomeFragment extends Fragment {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
+        createCompetition();
         final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
@@ -33,5 +39,16 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    public void createCompetition() {
+        createCompetition = (CardView) binding.createCompetition;
+        createCompetition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CreateCompetitionActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

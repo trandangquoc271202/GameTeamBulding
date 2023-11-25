@@ -2,13 +2,13 @@ package vn.edu.hcmuaf.fit.gameteambulding;
 
 import android.os.Bundle;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import vn.edu.hcmuaf.fit.gameteambulding.databinding.ActivityHomeBinding;
 
