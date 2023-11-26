@@ -24,16 +24,16 @@ import vn.edu.hcmuaf.fit.gameteambulding.Firebase.CompetitionService;
 
 public class CreateCompetitionActivity extends AppCompatActivity {
     private View back;
-    private TextInputEditText title, timeStart, timeEnd, content, criteria;
-    private Button createContest, addCriteria;
-    private CompetitionService competitionService;
+    private TextInputEditText title, timeStart, timeEnd, content, criteria, email;
+    private Button createContest, addCriteria, addEmail;
     private FirebaseFirestore db;
     private String idCreator;
-    private ArrayList<String> listCriteria;
+    private ArrayList<String> listCriteria, listEmail;
     private CriteriaAdapter criteriaAdapter;
-    private ListView lv_criteria;
-    private LinearLayout linearLayout;
-    private int count;
+    private EmailAdapter emailAdapter;
+    private ListView lv_criteria, lv_email;
+    private LinearLayout linearLayout, linearLayoutEmail;
+    private String idEmail, idCriteria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,20 +42,26 @@ public class CreateCompetitionActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         back = (View) findViewById(R.id.back);
         addCriteria = (Button) findViewById(R.id.add_criteria);
+        addEmail = (Button) findViewById(R.id.add_email);
         title = (TextInputEditText) findViewById(R.id.edit_text_title);
         timeStart = (TextInputEditText) findViewById(R.id.editDateStart);
         timeEnd = (TextInputEditText) findViewById(R.id.editDateEnd);
         idCreator = "12345";
         content = (TextInputEditText) findViewById(R.id.edit_content);
         criteria = (TextInputEditText) findViewById(R.id.edit_criteria);
+        email = (TextInputEditText) findViewById(R.id.edit_email);
         lv_criteria = (ListView) findViewById(R.id.lv_criteria);
+        lv_email = (ListView) findViewById(R.id.lv_email);
         linearLayout = (LinearLayout) findViewById(R.id.list_criteria);
+        linearLayoutEmail = (LinearLayout) findViewById(R.id.list_email);
         // Create ListView Criteria
         updateLV();
         listCriteria = new ArrayList<String>();
+        listEmail = new ArrayList<String>();
         // End ListView Criteria
         addCriteria();
-        createCompetition();
+        addEmail();
+        addCriteriaInFirebase();
         back();
     }
 
@@ -72,10 +78,28 @@ public class CreateCompetitionActivity extends AppCompatActivity {
         addCriteria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listCriteria.add(criteria.getText().toString());
-                criteriaAdapter = new CriteriaAdapter(getApplicationContext(), CreateCompetitionActivity.this, listCriteria);
-                lv_criteria.setAdapter(criteriaAdapter);
-                updateLinearLayoutHeight();
+                if (listCriteria.size() <= 2 && !criteria.getText().toString().equals("")) {
+                    listCriteria.add(criteria.getText().toString());
+                    criteriaAdapter = new CriteriaAdapter(getApplicationContext(), CreateCompetitionActivity.this, listCriteria);
+                    lv_criteria.setAdapter(criteriaAdapter);
+                    updateLinearLayoutHeight();
+                    criteria.setText("");
+                }
+            }
+        });
+    }
+
+    public void addEmail() {
+        addEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listEmail.size() <= 1 && !email.getText().toString().equals("")) {
+                    listEmail.add(email.getText().toString());
+                    emailAdapter = new EmailAdapter(getApplicationContext(), CreateCompetitionActivity.this, listEmail);
+                    lv_email.setAdapter(emailAdapter);
+                    updateLinearLayoutHeightEmail();
+                    email.setText("");
+                }
             }
         });
     }
@@ -86,28 +110,48 @@ public class CreateCompetitionActivity extends AppCompatActivity {
         lv_criteria.setAdapter(criteriaAdapter);
     }
 
-    public void createCompetition() {
+    public void createCompetition(String idCriteria, String idEmail) {
+        Map<String, Object> competition = new HashMap<>();
+        competition.put("TITLE", title.getText().toString());
+        competition.put("CREATOR", idCreator);
+        competition.put("TIME_START", timeStart.getText().toString());
+        competition.put("TIME_END", timeEnd.getText().toString());
+        competition.put("CONTENT", content.getText().toString());
+        competition.put("CRITERIALIST", idCriteria);
+        competition.put("EMAILLIST", idEmail);
+        // Add a new document with a generated ID
+        db.collection("COMPETITION")
+                .add(competition)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    }
+                });
+    }
 
+    public void addCriteriaInFirebase() {
         createContest = (Button) findViewById(R.id.createCompetition);
 
         createContest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Map<String, Object> competition = new HashMap<>();
-                competition.put("TITLE", title.getText().toString());
-                competition.put("CREATOR", idCreator);
-                competition.put("TIME_START", timeStart.getText().toString());
-                competition.put("TIME_END", timeEnd.getText().toString());
-                competition.put("CONTENT", content.getText().toString());
+                for (int i = 0; i < listCriteria.size(); i++) {
+                    competition.put("CRITERIA" + i, listCriteria.get(i));
+                }
 
-
-                // Add a new document with a generated ID
-                db.collection("COMPETITION")
+                db.collection("CRITERIALIST")
                         .add(competition)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
-                                finish();
+                                addEmailInFirebase(documentReference.getId());
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -117,8 +161,27 @@ public class CreateCompetitionActivity extends AppCompatActivity {
                         });
             }
         });
+    }
 
+    public void addEmailInFirebase(String idCriteria) {
+        Map<String, Object> competition = new HashMap<>();
+        for (int i = 0; i < listEmail.size(); i++) {
+            competition.put("EMAIL" + i, listEmail.get(i));
+        }
 
+        db.collection("EMAILLIST")
+                .add(competition)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        createCompetition(idCriteria, documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    }
+                });
     }
 
     private void updateLinearLayoutHeight() {
@@ -139,5 +202,25 @@ public class CreateCompetitionActivity extends AppCompatActivity {
         ViewGroup.LayoutParams params = linearLayout.getLayoutParams();
         params.height = totalHeight;
         lv_criteria.setLayoutParams(params);
+    }
+
+    private void updateLinearLayoutHeightEmail() {
+        int totalHeight = 300;
+        for (int i = 0; i < emailAdapter.getCount(); i++) {
+            View listItem = emailAdapter.getView(i, null, lv_email);
+            listItem.measure(
+                    View.MeasureSpec.makeMeasureSpec(lv_email.getWidth(), View.MeasureSpec.EXACTLY),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            );
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        // Thêm chiều cao của các đường phân cách giữa các phần tử
+        totalHeight += (lv_email.getDividerHeight() * (emailAdapter.getCount() - 1));
+
+        // Lấy LayoutParams của LinearLayout và đặt chiều cao mới
+        ViewGroup.LayoutParams params = linearLayoutEmail.getLayoutParams();
+        params.height = totalHeight;
+        lv_email.setLayoutParams(params);
     }
 }
