@@ -229,8 +229,8 @@ public class CreateCompetitionActivity extends AppCompatActivity {
         createContest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(listCriteria.size()>0 && listEmail.size()>0 && !title.getText().toString().equals("") && !timeEnd.getText().toString().equals("")
-                        && !timeStart.getText().toString().equals("") && !content.getText().toString().equals("")){
+                if (listCriteria.size() > 0 && listEmail.size() == 2 && !title.getText().toString().equals("") && !timeEnd.getText().toString().equals("")
+                        && !timeStart.getText().toString().equals("") && !content.getText().toString().equals("")) {
                     Map<String, Object> competition = new HashMap<>();
                     for (int i = 0; i < listCriteria.size(); i++) {
                         competition.put("CRITERIA" + i, listCriteria.get(i));
@@ -341,6 +341,7 @@ public class CreateCompetitionActivity extends AppCompatActivity {
         // Hiển thị hộp thoại chọn ngày tháng năm
         datePickerDialog.show();
     }
+
     private void showTimePickerDialogStart(Context context) {
         final Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -354,7 +355,7 @@ public class CreateCompetitionActivity extends AppCompatActivity {
                         // Xử lý giờ được chọn ở đây
                         String selectedTime = hourOfDay + ":" + minute;
                         // Hiển thị giờ đã chọn trên nút hoặc nơi khác
-                        timeStart.setText(timeStart.getText().toString()+" " +selectedTime);
+                        timeStart.setText(timeStart.getText().toString() + " " + selectedTime);
                     }
                 },
                 hour,
@@ -365,6 +366,7 @@ public class CreateCompetitionActivity extends AppCompatActivity {
         // Hiển thị hộp thoại chọn giờ
         timePickerDialog.show();
     }
+
     private void showDatePickerDialogEnd(Context context) {
         final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -391,6 +393,7 @@ public class CreateCompetitionActivity extends AppCompatActivity {
         // Hiển thị hộp thoại chọn ngày tháng năm
         datePickerDialog.show();
     }
+
     private void showTimePickerDialog(Context context) {
         final Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -404,7 +407,7 @@ public class CreateCompetitionActivity extends AppCompatActivity {
                         // Xử lý giờ được chọn ở đây
                         String selectedTime = hourOfDay + ":" + minute;
                         // Hiển thị giờ đã chọn trên nút hoặc nơi khác
-                        timeEnd.setText(timeEnd.getText().toString() +" " + selectedTime);
+                        timeEnd.setText(timeEnd.getText().toString() + " " + selectedTime);
                     }
                 },
                 hour,
