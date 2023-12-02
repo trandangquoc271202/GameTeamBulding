@@ -25,15 +25,19 @@ import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class UploadView extends AppCompatActivity {
     StorageReference storageReference;
+
     LinearProgressIndicator indicator;
     Uri video;
     MaterialButton selectVideo, uploadVideo;
@@ -44,15 +48,17 @@ public class UploadView extends AppCompatActivity {
             if(o.getResultCode()== RESULT_OK){
                 if(o.getData()!=null){
                     uploadVideo.setEnabled(true);
-                    StorageReference reference=storageReference.child("video/"+ UUID.randomUUID().toString());
-                    reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            //videoView.findViewById(R.id.video_Upload_View);
-
-                        }
-                    });
-                     //  Glide.with(UploadView.this).load(video).into(videoView);
+                    video=o.getData().getData();
+//                    StorageReference reference=storageReference.child("video/"+ UUID.randomUUID().toString());
+//                    reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                        @Override
+//                        public void onSuccess(Uri uri) {
+//
+//                            //videoView.findViewById(R.id.video_Upload_View);
+//
+//                        }
+//                    });
+                    //  Glide.with(UploadView.this).load(video).into(videoView);
                 }
             }
             else {
@@ -90,12 +96,40 @@ public class UploadView extends AppCompatActivity {
         });
     }
     private void uploadVideo(Uri uri){
-        StorageReference reference=storageReference.child("video/"+ UUID.randomUUID().toString());
-        DatabaseReference db=FirebaseDatabase.getInstance().getReference("VIDEO_UPLOAD_TEST");
-        reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        StorageReference reference=storageReference.child("videos/"+ UUID.randomUUID().toString());
+        FirebaseFirestore  db= FirebaseFirestore.getInstance();
+
+        reference.putFile(uri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(UploadView.this,"Upload success",Toast.LENGTH_SHORT).show();
+                reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+
+                        Map<String, Object> entry = new HashMap<>();
+                        entry.put("ENTRY_LINK", uri.toString());
+
+
+                        db.collection("ENTRY").document(UUID.randomUUID().toString())
+                                .set(entry)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+
+                                    }
+                                });
+                        Toast.makeText(UploadView.this,"Upload success",Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
 
             }
         }).addOnFailureListener(new OnFailureListener() {
