@@ -34,11 +34,13 @@ public class ListContestActivity extends AppCompatActivity {
     ContestAdapter adapter;
     ListView lv_main;
     private String idUser;
+    private View back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_contest);
         idUser ="12345";
+        back = (View) findViewById(R.id.back);
         listContest = new ArrayList<Contest>();
         lv_main = findViewById(R.id.listContest);
         lv_main.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -52,6 +54,15 @@ public class ListContestActivity extends AppCompatActivity {
             }
         });
         loadContest();
+        back();
+    }
+    public void back() {
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
     public void loadContest(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();

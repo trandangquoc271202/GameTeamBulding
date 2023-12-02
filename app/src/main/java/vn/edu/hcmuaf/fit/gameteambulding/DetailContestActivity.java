@@ -546,11 +546,16 @@ public class DetailContestActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 DocumentReference documentReference = db.collection("COMPETITION").document(idContest);
-                documentReference.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Xóa thành công!", Toast.LENGTH_SHORT).show();
+                            if (listCriteria.size() > 0 && (listEmail.size() == 2) && !title.getText().toString().equals("") && !timeEnd.getText().toString().equals("")
+                                    && !timeStart.getText().toString().equals("") && !content.getText().toString().equals("")) {
+                                DocumentSnapshot documentSnapshot = task.getResult();
+                                deleteCriteriaAndEmail(documentSnapshot.getString("CRITERIALIST"), documentSnapshot.getString("EMAILLIST"));
+                                Toast.makeText(getApplicationContext(), "Xóa thành công!", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
 
                         }
@@ -562,6 +567,43 @@ public class DetailContestActivity extends AppCompatActivity {
         });
         dialog.show();
     }
+
+    public void deleteCriteriaAndEmail(String idC, String idE) {
+        DocumentReference documentReference = db.collection("COMPETITION").document(idContest);
+        documentReference.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+
+                } else {
+
+                }
+            }
+        });
+        documentReference = db.collection("EMAILLIST").document(idE);
+        documentReference.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+
+                } else {
+
+                }
+            }
+        });
+        documentReference = db.collection("CRITERIALIST").document(idC);
+        documentReference.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+
+                } else {
+
+                }
+            }
+        });
+    }
+
     public void updateDialog() {
         dialog = new Dialog(DetailContestActivity.this);
         dialog.setContentView(R.layout.dialog_del);
@@ -584,6 +626,7 @@ public class DetailContestActivity extends AppCompatActivity {
         });
         dialog.show();
     }
+
     public void updateCriteria(String id) {
         DocumentReference documentReference = db.collection("CRITERIALIST").document(id);
         Map<String, Object> data = new HashMap<>();
@@ -602,6 +645,7 @@ public class DetailContestActivity extends AppCompatActivity {
         }
         documentReference.update(data);
     }
+
     public void updateContest(String idC, String idE) {
         DocumentReference documentReference = db.collection("COMPETITION").document(idContest);
         Map<String, Object> competition = new HashMap<>();
@@ -615,6 +659,7 @@ public class DetailContestActivity extends AppCompatActivity {
         competition.put("EMAILLIST", idE);
         documentReference.update(competition);
     }
+
     public void updateContestFinal() {
         DocumentReference documentReference = db.collection("COMPETITION").document(idContest);
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -622,7 +667,7 @@ public class DetailContestActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     if (listCriteria.size() > 0 && (listEmail.size() == 2) && !title.getText().toString().equals("") && !timeEnd.getText().toString().equals("")
-                        && !timeStart.getText().toString().equals("") && !content.getText().toString().equals("")) {
+                            && !timeStart.getText().toString().equals("") && !content.getText().toString().equals("")) {
                         DocumentSnapshot documentSnapshot = task.getResult();
                         updateCriteria(documentSnapshot.getString("CRITERIALIST"));
                         updateEmail(documentSnapshot.getString("EMAILLIST"));
