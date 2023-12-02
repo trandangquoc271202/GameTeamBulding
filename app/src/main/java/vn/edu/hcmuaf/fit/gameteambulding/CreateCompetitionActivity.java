@@ -1,11 +1,17 @@
 package vn.edu.hcmuaf.fit.gameteambulding;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +22,12 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +36,7 @@ import vn.edu.hcmuaf.fit.gameteambulding.Firebase.CompetitionService;
 public class CreateCompetitionActivity extends AppCompatActivity {
     private View back;
     private TextInputEditText title, timeStart, timeEnd, content, criteria, email;
-    private Button createContest, addCriteria, addEmail;
+    private Button createContest, addCriteria, addEmail, btn_del, btn_cancel;
     private FirebaseFirestore db;
     private String idCreator;
     private ArrayList<String> listCriteria, listEmail;
@@ -34,6 +45,7 @@ public class CreateCompetitionActivity extends AppCompatActivity {
     private ListView lv_criteria, lv_email;
     private LinearLayout linearLayout, linearLayoutEmail;
     private String idEmail, idCriteria;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +57,19 @@ public class CreateCompetitionActivity extends AppCompatActivity {
         addEmail = (Button) findViewById(R.id.add_email);
         title = (TextInputEditText) findViewById(R.id.edit_text_title);
         timeStart = (TextInputEditText) findViewById(R.id.editDateStart);
+        timeStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePickerDialog(CreateCompetitionActivity.this);
+            }
+        });
         timeEnd = (TextInputEditText) findViewById(R.id.editDateEnd);
+        timeEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePickerDialogEnd(CreateCompetitionActivity.this);
+            }
+        });
         idCreator = "12345";
         content = (TextInputEditText) findViewById(R.id.edit_content);
         criteria = (TextInputEditText) findViewById(R.id.edit_criteria);
@@ -59,6 +83,18 @@ public class CreateCompetitionActivity extends AppCompatActivity {
         listCriteria = new ArrayList<String>();
         listEmail = new ArrayList<String>();
         // End ListView Criteria
+
+
+//
+        lv_criteria.setOnItemLongClickListener((adapterView, view, i, l) -> {
+            deleteCriteria(i);
+            return true;
+        });
+        lv_email.setOnItemLongClickListener((adapterView, view, i, l) -> {
+            deleteEmail(i);
+            return true;
+        });
+//
         addCriteria();
         addEmail();
         addCriteriaInFirebase();
@@ -72,6 +108,58 @@ public class CreateCompetitionActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    public void deleteCriteria(int i) {
+        dialog = new Dialog(CreateCompetitionActivity.this);
+        dialog.setContentView(R.layout.dialog_del);
+        btn_cancel = dialog.findViewById(R.id.btn_cancel);
+        btn_del = dialog.findViewById(R.id.btn_del);
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        btn_del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                listCriteria.remove(i);
+
+                criteriaAdapter.notifyDataSetChanged();
+                updateLinearLayoutHeight();
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    public void deleteEmail(int i) {
+        dialog = new Dialog(CreateCompetitionActivity.this);
+        dialog.setContentView(R.layout.dialog_del);
+        btn_cancel = dialog.findViewById(R.id.btn_cancel);
+        btn_del = dialog.findViewById(R.id.btn_del);
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        btn_del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                listEmail.remove(i);
+
+                emailAdapter.notifyDataSetChanged();
+                updateLinearLayoutHeightEmail();
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     public void addCriteria() {
@@ -114,8 +202,8 @@ public class CreateCompetitionActivity extends AppCompatActivity {
         Map<String, Object> competition = new HashMap<>();
         competition.put("TITLE", title.getText().toString());
         competition.put("CREATOR", idCreator);
-        competition.put("TIME_START", timeStart.getText().toString());
-        competition.put("TIME_END", timeEnd.getText().toString());
+        competition.put("TIME_START", convertStringToDate(timeStart.getText().toString()));
+        competition.put("TIME_END", convertStringToDate(timeEnd.getText().toString()));
         competition.put("CONTENT", content.getText().toString());
         competition.put("CRITERIALIST", idCriteria);
         competition.put("EMAILLIST", idEmail);
@@ -141,24 +229,27 @@ public class CreateCompetitionActivity extends AppCompatActivity {
         createContest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Map<String, Object> competition = new HashMap<>();
-                for (int i = 0; i < listCriteria.size(); i++) {
-                    competition.put("CRITERIA" + i, listCriteria.get(i));
-                }
+                if(listCriteria.size()>0 && listEmail.size()>0 && !title.getText().toString().equals("") && !timeEnd.getText().toString().equals("")
+                        && !timeStart.getText().toString().equals("") && !content.getText().toString().equals("")){
+                    Map<String, Object> competition = new HashMap<>();
+                    for (int i = 0; i < listCriteria.size(); i++) {
+                        competition.put("CRITERIA" + i, listCriteria.get(i));
+                    }
 
-                db.collection("CRITERIALIST")
-                        .add(competition)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                addEmailInFirebase(documentReference.getId());
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                            }
-                        });
+                    db.collection("CRITERIALIST")
+                            .add(competition)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    addEmailInFirebase(documentReference.getId());
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                }
+                            });
+                }
             }
         });
     }
@@ -222,5 +313,125 @@ public class CreateCompetitionActivity extends AppCompatActivity {
         ViewGroup.LayoutParams params = linearLayoutEmail.getLayoutParams();
         params.height = totalHeight;
         lv_email.setLayoutParams(params);
+    }
+
+    private void showDatePickerDialog(Context context) {
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                context,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        // Xử lý ngày được chọn ở đây
+                        String selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
+                        // Hiển thị ngày đã chọn trên nút hoặc nơi khác
+                        timeStart.setText(selectedDate);
+                        showTimePickerDialogStart(context);
+                    }
+                },
+                year,
+                month,
+                day
+        );
+
+        // Hiển thị hộp thoại chọn ngày tháng năm
+        datePickerDialog.show();
+    }
+    private void showTimePickerDialogStart(Context context) {
+        final Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                context,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        // Xử lý giờ được chọn ở đây
+                        String selectedTime = hourOfDay + ":" + minute;
+                        // Hiển thị giờ đã chọn trên nút hoặc nơi khác
+                        timeStart.setText(timeStart.getText().toString()+" " +selectedTime);
+                    }
+                },
+                hour,
+                minute,
+                true // true nếu sử dụng định dạng 24 giờ, false nếu sử dụng định dạng 12 giờ
+        );
+
+        // Hiển thị hộp thoại chọn giờ
+        timePickerDialog.show();
+    }
+    private void showDatePickerDialogEnd(Context context) {
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                context,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        // Xử lý ngày được chọn ở đây
+                        String selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
+                        // Hiển thị ngày đã chọn trên nút hoặc nơi khác
+                        timeEnd.setText(selectedDate);
+                        showTimePickerDialog(context);
+                    }
+                },
+                year,
+                month,
+                day
+        );
+
+        // Hiển thị hộp thoại chọn ngày tháng năm
+        datePickerDialog.show();
+    }
+    private void showTimePickerDialog(Context context) {
+        final Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                context,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        // Xử lý giờ được chọn ở đây
+                        String selectedTime = hourOfDay + ":" + minute;
+                        // Hiển thị giờ đã chọn trên nút hoặc nơi khác
+                        timeEnd.setText(timeEnd.getText().toString() +" " + selectedTime);
+                    }
+                },
+                hour,
+                minute,
+                true // true nếu sử dụng định dạng 24 giờ, false nếu sử dụng định dạng 12 giờ
+        );
+
+        // Hiển thị hộp thoại chọn giờ
+        timePickerDialog.show();
+    }
+
+    public String convertStringToDate(String dateString) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date date = null;
+        try {
+            date = dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return date.getTime() + "";
+    }
+
+    public Date convertTimeToDate(String time) {
+        BigInteger number = new BigInteger(time);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(number.longValue());
+        Date date = calendar.getTime();
+        return date;
     }
 }
