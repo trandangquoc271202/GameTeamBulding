@@ -14,13 +14,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import vn.edu.hcmuaf.fit.gameteambulding.CreateCompetitionActivity;
 import vn.edu.hcmuaf.fit.gameteambulding.HomeActivity;
+import vn.edu.hcmuaf.fit.gameteambulding.ListContestActivity;
 import vn.edu.hcmuaf.fit.gameteambulding.R;
 import vn.edu.hcmuaf.fit.gameteambulding.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    private CardView createCompetition;
+    private CardView createCompetition, listContest;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         createCompetition();
+        listContest();
         final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
@@ -47,6 +49,16 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), CreateCompetitionActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+    public void listContest() {
+        listContest = (CardView) binding.listContest;
+        listContest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ListContestActivity.class);
                 startActivity(intent);
             }
         });
