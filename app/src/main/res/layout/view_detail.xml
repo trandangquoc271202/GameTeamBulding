@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+
+        android:layout_marginTop="35dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="XEM THÔNG TIN CHI TIẾT"
+                android:textColor="#30D040"
+                android:textSize="22sp"
+                android:layout_marginRight="20dp"></TextView>
+
+            <Button
+                android:layout_width="115dp"
+                android:layout_height="wrap_content"
+                android:text="Cập Nhật"
+                android:textSize="18sp"
+                android:textAllCaps="false"
+                android:padding="12dp"
+
+                android:layout_marginRight="10dp"
+
+                ></Button>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="84dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@drawable/border_result"
+            android:src="@drawable/avatar"></ImageView>
+    </LinearLayout>
+</RelativeLayout>

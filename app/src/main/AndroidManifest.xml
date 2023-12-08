@@ -39,6 +39,15 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+        <activity android:name=".ui.viewresult.ViewResult"
+            android:exported="true"/>
+<activity android:name=".ui.viewresult.ViewResultDetail"
+    android:exported="true"
+    />
+        <activity android:name=".ui.viewresult.ViewCompetition"
+            android:exported="true"
+            />
+
     </application>
 
 </manifest>
