@@ -5,4 +5,9 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="xem_chi_tiet"><u>xem chi tiết</u></string>
+
+    <string name="register">Đăng ký</string>
+    <string name="login">ĐĂNG NHẬP</string>
+    <string name="forget_password">Quên mật khẩu</string>
+
 </resources>
