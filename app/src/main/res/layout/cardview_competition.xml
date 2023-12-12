@@ -11,9 +11,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#CBE3E0"
+        android:layout_marginLeft="10dp"
         android:background="@drawable/border_result"
-        android:layout_marginLeft="10dp">
+        android:backgroundTint="#CBE3E0">
 
         <LinearLayout
             android:id="@+id/info"
@@ -21,9 +21,9 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="20dp"
-            android:padding="10dp"
             android:gravity="left"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/tv_name1"
@@ -34,25 +34,25 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/tv_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_code"
                 android:text="Mã số: 22222"
                 android:textColor="#000000"
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <Button
+        <TextView
             android:id="@+id/button_view"
-            android:layout_width="130dp"
-            android:layout_height="45dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/info"
-            android:backgroundTint="#0D99FF"
-            android:gravity="right"
-            android:onClick="onViewResultClick"
-            android:text="Xem chi tiết"
-            android:textAllCaps="false" />
+            android:text="@string/xem_chi_tiet"
+            android:textAllCaps="false"
+            android:textColor="#30D040"
+            android:textSize="20dp" />
+
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

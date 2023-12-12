@@ -1,43 +1,104 @@
 package vn.edu.hcmuaf.fit.gameteambulding.Model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import androidx.lifecycle.ViewModel;
 
-public class Competition {
-    private String id;
-    private String candidate1;
-    private String candidate2;
+import com.google.firebase.Timestamp;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+public class Competition extends ViewModel implements Serializable {
+
+    private CompetitionUser user1;
+    private CompetitionUser user2;
+    private String code;
+    private String documentId;
+    private String compettionUser1;
+    private String compettionUser2;
     private String content;
     private String creator;
-    private String criteriaList;
-    private String emailList;
-    private String timeEnd;
-    private String timeStart;
-        private String title;
 
-    public String getId() {
-        return id;
+    @Override
+    public String toString() {
+        return "Competition{" +
+                "user1=" + user1 +
+                ", user2=" + user2 +
+                ", code='" + code + '\'' +
+                ", documentId='" + documentId + '\'' +
+                ", compettionUser1='" + compettionUser1 + '\'' +
+                ", compettionUser2='" + compettionUser2 + '\'' +
+                ", content='" + content + '\'' +
+                ", creator='" + creator + '\'' +
+                ", endAt='" + endAt + '\'' +
+                ", startAt='" + startAt + '\'' +
+                ", title='" + title + '\'' +
+                ", totalVote='" + totalVote + '\'' +
+                '}';
     }
 
-    public void setId(String id) {
-        this.id = id;
+    private String endAt;
+    private String startAt;
+    private String title;
+    private String totalVote;
+
+    public Competition(String code, String compettionUser1, String compettionUser2, String content, String creator, String endAt, String startAt, String title, String totalVote) {
+        this.code = code;
+        this.compettionUser1 = compettionUser1;
+        this.compettionUser2 = compettionUser2;
+        this.content = content;
+        this.creator = creator;
+        this.endAt = endAt;
+        this.startAt = startAt;
+        this.title = title;
+        this.totalVote = totalVote;
     }
 
-    public String getCandidate1() {
-        return candidate1;
+    public CompetitionUser getUser1() {
+        return user1;
     }
 
-    public void setCandidate1(String candidate1) {
-        this.candidate1 = candidate1;
+    public void setUser1(CompetitionUser user1) {
+        this.user1 = user1;
     }
 
-    public String getCandidate2() {
-        return candidate2;
+    public CompetitionUser getUser2() {
+        return user2;
     }
 
-    public void setCandidate2(String candidate2) {
-        this.candidate2 = candidate2;
+    public void setUser2(CompetitionUser user2) {
+        this.user2 = user2;
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getCompettionUser1() {
+        return compettionUser1;
+    }
+
+    public void setCompettionUser1(String compettionUser1) {
+        this.compettionUser1 = compettionUser1;
+    }
+
+    public String getCompettionUser2() {
+        return compettionUser2;
+    }
+
+    public void setCompettionUser2(String compettionUser2) {
+        this.compettionUser2 = compettionUser2;
     }
 
     public String getContent() {
@@ -56,36 +117,20 @@ public class Competition {
         this.creator = creator;
     }
 
-    public String getCriteriaList() {
-        return criteriaList;
+    public String getEndAt() {
+        return endAt;
     }
 
-    public void setCriteriaList(String criteriaList) {
-        this.criteriaList = criteriaList;
+    public void setEndAt(String endAt) {
+        this.endAt = endAt;
     }
 
-    public String getEmailList() {
-        return emailList;
+    public String getStartAt() {
+        return startAt;
     }
 
-    public void setEmailList(String emailList) {
-        this.emailList = emailList;
-    }
-
-    public String getTimeEnd() {
-        return timeEnd;
-    }
-
-    public void setTimeEnd(String timeEnd) {
-        this.timeEnd = timeEnd;
-    }
-
-    public String getTimeStart() {
-        return timeStart;
-    }
-
-    public void setTimeStart(String timeStart) {
-        this.timeStart = timeStart;
+    public void setStartAt(String startAt) {
+        this.startAt = startAt;
     }
 
     public String getTitle() {
@@ -96,8 +141,14 @@ public class Competition {
         this.title = title;
     }
 
-    public Competition() {
+    public String getTotalVote() {
+        return totalVote;
     }
 
+    public void setTotalVote(String totalVote) {
+        this.totalVote = totalVote;
+    }
 
+    public Competition() {
+    }
 }

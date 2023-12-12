@@ -13,7 +13,7 @@
         tools:ignore="MissingConstraints">
 
 
-        <View
+            <View
             android:id="@+id/back"
             android:layout_width="50dp"
             android:layout_height="50dp"
