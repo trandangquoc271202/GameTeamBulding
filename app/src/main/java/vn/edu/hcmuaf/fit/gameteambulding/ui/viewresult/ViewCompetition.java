@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,8 +28,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vn.edu.hcmuaf.fit.gameteambulding.Model.Competition;
+import vn.edu.hcmuaf.fit.gameteambulding.Model.CompetitionUser;
 import vn.edu.hcmuaf.fit.gameteambulding.R;
 import vn.edu.hcmuaf.fit.gameteambulding.ui.viewresult.ViewResult;
+import vn.edu.hcmuaf.fit.gameteambulding.ui.viewresult.my_interface.IClickItemUserListener;
 
 public class ViewCompetition extends AppCompatActivity {
     private RecyclerView rcvCompetition;
@@ -36,13 +39,15 @@ public class ViewCompetition extends AppCompatActivity {
 
     private static final String TAG = "ViewCompetition";
     private List<Competition> listCompetition;
-    private LinearLayout linearLayoutCompetition;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.management_competition);
         initUi();
+
+
     }
 
     private void initUi() {
@@ -55,7 +60,24 @@ public class ViewCompetition extends AppCompatActivity {
         // Removed the call to getAllDataFromFirestore() here
         getAllDataFromFirestore();
         // Initialize the adapter here, but don't set it until you have the data
-        competitionAdapter = new CompetitionAdapter(listCompetition);
+        competitionAdapter = new CompetitionAdapter(listCompetition, new IClickItemUserListener() {
+            @Override
+            public void onClickItemUser(Competition competition) {
+                Intent intent = new Intent(ViewCompetition.this, ViewResult.class);
+                Bundle bundle = new Bundle();
+                Log.d(TAG, "onClickItemUser: " + competition);
+                bundle.putSerializable("COMPETITION", competition);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
+//        competitionAdapter.setOnItemClickListener(competition -> {
+//            // Handle item click, e.g., pass the competition ID to the ViewResult activity
+//            Intent intent = new Intent(ViewCompetition.this, ViewResult.class);
+//            intent.putExtra("COMPETITION", competition);
+//            startActivity(intent);
+//        });
 
         // Set the adapter after retrieving data
         rcvCompetition.setAdapter(competitionAdapter);
@@ -66,7 +88,7 @@ public class ViewCompetition extends AppCompatActivity {
 
     private void getAllDataFromFirestore() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("COMPETITION").get().addOnCompleteListener(task -> {
+        db.collection("COMPETITION2").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Competition competition = document.toObject(Competition.class);
