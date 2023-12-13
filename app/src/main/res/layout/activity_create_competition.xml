@@ -125,67 +125,7 @@
 
             </GridLayout>
 
-            <LinearLayout
-                android:id="@+id/list_criteria"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/border_backgroud"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/border_backgroud"
-                    android:orientation="horizontal">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/criteria"
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
-
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/edit_criteria"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="@drawable/border"
-                            android:padding="10dp"
-                            android:backgroundTint="@color/white"
-                            android:hint="Tiêu chí" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <Button
-                        android:id="@+id/add_criteria"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/border_backgroud"
-                        android:backgroundTint="#0D99FF"
-                        android:text="Thêm" />
-
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:background="@color/white"
-                     />
-                <ListView
-                    android:id="@+id/lv_criteria"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp" />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/list_email"
