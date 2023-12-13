@@ -455,6 +455,7 @@ public class DetailContestActivity extends AppCompatActivity {
         competition.put("startAt", timeStart.getText().toString());
         competition.put("endAt", timeEnd.getText().toString());
         competition.put("content", content.getText().toString());
+        competition.put("totalVote", "");
         competition.put("compettionUser1", id1);
         competition.put("compettionUser2", id2);
         documentReference.update(competition);
