@@ -229,7 +229,7 @@ public class CreateCompetitionActivity extends AppCompatActivity {
         competition.put("compettionUser1", id1);
         competition.put("compettionUser2", id2);
         // Add a new document with a generated ID
-        db.collection("COMPETITION")
+        db.collection("COMPETITION2")
                 .add(competition)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
