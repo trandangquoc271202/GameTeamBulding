@@ -67,7 +67,7 @@ public class ListContestActivity extends AppCompatActivity {
     public void loadContest(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("COMPETITION")
+        db.collection("COMPETITION2")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -76,8 +76,8 @@ public class ListContestActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             ArrayList<Contest> list = new ArrayList<Contest>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                if(document.getData().get("CREATOR").toString().equals(idUser)){
-                                    contest = new Contest(document.getId(), document.getData().get("TITLE").toString());
+                                if(document.getData().get("creator").toString().equals(idUser)){
+                                    contest = new Contest(document.getId(), document.getData().get("title").toString());
                                     list.add(contest);
 //                                    Toast.makeText(getApplicationContext(), "Contest: "+list.get(0).getId(), Toast.LENGTH_SHORT).show();
                                 }
