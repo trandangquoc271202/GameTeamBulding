@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateCompetitionActivity">
+    tools:context=".DetailContestActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -42,9 +42,9 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:padding="10dp"
                     android:background="@drawable/border"
-                    android:hint="Tiêu đề" />
+                    android:hint="Tiêu đề"
+                    android:padding="10dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -85,9 +85,9 @@
                             android:layout_height="50dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
-                            android:padding="10dp"
                             android:background="@drawable/border"
-                            android:hint="dd/mm/yy" />
+                            android:hint="dd/mm/yy"
+                            android:padding="10dp" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
@@ -116,10 +116,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginTop="10dp"
-                            android:padding="10dp"
                             android:layout_marginBottom="10dp"
                             android:background="@drawable/border"
-                            android:hint="dd/mm/yy" />
+                            android:hint="dd/mm/yy"
+                            android:padding="10dp" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
@@ -134,6 +134,7 @@
                 android:layout_margin="10dp"
                 android:background="@drawable/border_backgroud"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -156,9 +157,9 @@
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
                             android:background="@drawable/border"
-                            android:padding="10dp"
                             android:backgroundTint="@color/white"
-                            android:hint="Email" />
+                            android:hint="Email"
+                            android:padding="10dp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <Button
@@ -177,10 +178,9 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="5dp"
                     android:layout_margin="5dp"
-                    android:background="@color/white"
-                    />
+                    android:layout_marginTop="5dp"
+                    android:background="@color/white" />
 
                 <ListView
                     android:id="@+id/lv_email"
@@ -201,25 +201,47 @@
                     android:layout_height="200dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:gravity="top"
-                    android:padding="10dp"
                     android:background="@drawable/border"
-                    android:hint="Nội dung" />
+                    android:gravity="top"
+                    android:hint="Nội dung"
+                    android:padding="10dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/createCompetition"
-                android:layout_width="120dp"
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:background="@drawable/border_backgroud"
-                android:backgroundTint="#0CF469"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:text="Tạo cuộc thi" />
+                android:layout_margin="20dp"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/updateContest"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/border_backgroud"
+                    android:backgroundTint="#0CF469"
+                    android:gravity="center"
+                    android:text="Cập nhật"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+                <Button
+                    android:id="@+id/deleteContest"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/btn_del"
+                    android:gravity="center"
+                    android:text="Xóa"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </LinearLayout>
+
+
 
 
         </LinearLayout>
