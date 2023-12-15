@@ -15,7 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:text="Candidate ID is :"
+        android:text="THÍ SINH THỨ NHẤT"
+        android:textSize="18dp"
         android:textAlignment="center"
         />
 
@@ -58,14 +59,7 @@
             ></EditText>
     </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:enabled="false"
-        android:id="@+id/evaluation_save_btn"
-        android:layout_gravity="center"
-        android:text="LƯU"/>
+
 <!--    <LinearLayout-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->

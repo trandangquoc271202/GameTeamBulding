@@ -9,15 +9,26 @@
 
 
     <TextView
-        android:id="@+id/id"
+        android:id="@+id/comp_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cuoc thi ten la "
+
+        android:textStyle="bold"
+        android:textSize="24dp"
         android:textAlignment="center"/>
     <FrameLayout
         android:id="@+id/fragment_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></FrameLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+
+        android:id="@+id/evaluation_save_btn"
+        android:layout_gravity="center"
+        android:text="LƯU"/>
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

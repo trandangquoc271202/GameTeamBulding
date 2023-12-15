@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -40,9 +42,13 @@ import java.util.Calendar;
 import java.util.Map;
 import java.util.UUID;
 
+import butterknife.BindView;
+
+//Bundle key: competitionPath = pass in the id of competition
 public class UploadView extends AppCompatActivity {
     StorageReference storageReference;
     String competitionPath;
+    FirebaseAuth auth= FirebaseAuth.getInstance();
     String competitionID;
     FirebaseFirestore  db= FirebaseFirestore.getInstance();
     String userID;
@@ -52,6 +58,7 @@ public class UploadView extends AppCompatActivity {
     String fakeCompID="competition000111";
     //fake end
     LinearProgressIndicator indicator;
+
     Uri video;
     MediaController mc;
     MaterialButton selectVideo, uploadVideo;
@@ -96,21 +103,14 @@ public class UploadView extends AppCompatActivity {
             }
         }
     });
-//exoplayer code
-//    @Override
-//    protected  void onStop(){
-//        super.onStop();
-//        player.setPlayWhenReady(false);
-//        player.release();
-//        player=null;
-//    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_view);
         FirebaseApp.initializeApp(this);
         storageReference = FirebaseStorage.getInstance().getReference();
-//        player= new ExoPlayer.Builder(UploadView.this).build();
+
 
         videoView= findViewById(R.id.video_Upload_View);
         if(getIntent().getExtras()!=null){
@@ -118,19 +118,16 @@ public class UploadView extends AppCompatActivity {
                 competitionPath =getIntent().getExtras().getString("competitionPath");
             }
             else{
-                competitionPath ="CzriTAqtRciKlixdzEyq";}
+                competitionPath ="F1KOzoe56XhzzevycpRC";}
             }
         else{
-        competitionPath ="CzriTAqtRciKlixdzEyq";}
-        if(getIntent().getExtras()!=null) {
-            if(getIntent().getExtras().getString("userPath")!=null){
-                userPath = getIntent().getExtras().getString("userPath");
-            }else{
-                userPath = "AkG4CbvnvvYrQcMnMt1Z";
-            }
+        competitionPath ="F1KOzoe56XhzzevycpRC";}
+
+        if(auth.getCurrentUser()!=null) {
+            userID=auth.getCurrentUser().getUid();
 
         }else {
-            userPath = "AkG4CbvnvvYrQcMnMt1Z";
+            userID = "xIwX5LPaEs1N0sehdDWg";
         }
         indicator=findViewById(R.id.process);
 
@@ -140,7 +137,7 @@ public class UploadView extends AppCompatActivity {
         compID=findViewById(R.id.competition_id);
         mc = new MediaController(this);
 
-        DocumentReference docRef = db.collection("COMPETITION").document(competitionPath);
+        DocumentReference docRef = db.collection("COMPETITION2").document(competitionPath);
         docRef.addSnapshotListener( new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -148,15 +145,6 @@ public class UploadView extends AppCompatActivity {
                 name.setText(value.getString("title"));
                 compID.setText(docRef.getPath().substring(docRef.getPath().indexOf("/")+1,docRef.getPath().length()));
                 competitionID=docRef.getPath().substring(docRef.getPath().indexOf("/")+1,docRef.getPath().length());
-
-            }
-        });
-        DocumentReference docRef2 = db.collection("USER").document(userPath);
-//
-        docRef2.addSnapshotListener( new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                userID=value.getString("ID");
 
             }
         });
@@ -195,10 +183,11 @@ public class UploadView extends AppCompatActivity {
                         String entryID=competitionID+userID;
                         String timeStamp = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss").format(Calendar.getInstance().getTime());
                         Entry e= new Entry(entryID,uri.toString(),userID,competitionID,timeStamp);
-                        Map<String, Object> entry = e.getMap();
+                        //e.setComp_id(competitionID);
+                        Map<String, Object> entry = e.getNewMap();
 
 
-                        db.collection("ENTRY_LIST").document(entryID)
+                        db.collection("ENTRY_LIST").document(UUID.randomUUID().toString())
                                 .set(entry)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override

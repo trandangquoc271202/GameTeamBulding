@@ -31,16 +31,19 @@ import butterknife.Unbinder;
  */
 public class Candidate2Fragment extends Fragment {
     private ExoPlayer player;
-    @BindView(R.id.evaluation_save_btn2) Button save;
+
     @BindView(R.id.point_evaluate_editText2)
     EditText point;
     @BindView(R.id.styledPlayerView22) StyledPlayerView styledPlayerView
             ;
-    String url="https://firebasestorage.googleapis.com/v0/b/gameteambulding.appspot.com/o/videos%2F05a88dbf-e5a9-4b8f-9fc6-3ecdb9aa1366?alt=media&token=40913e06-0769-4a85-a9cd-61dee4b19999";
+    String vidURL;
     private Unbinder unbinder;
 
     public Candidate2Fragment() {
         // Required empty public constructor
+    }
+    public Candidate2Fragment(String url) {
+       this.vidURL=url;
     }
 
 
@@ -90,14 +93,13 @@ public class Candidate2Fragment extends Fragment {
                             s.replace(0,s.length(),s.subSequence(s.length()-1,s.length()));
                         }
                     }
-                    if (i>10){
+                    if (i>=10){
                         s.replace(0,s.length(),"10");
                     }
                     if (i<0){
                         s.replace(0,s.length(),"0");
                     }
                     point.setText(s);
-                    save.setEnabled(true);
                     _ignore=false;
                 }
             }
@@ -113,7 +115,7 @@ public class Candidate2Fragment extends Fragment {
         }
 
         styledPlayerView.setPlayer(player);
-        MediaItem mediaItem= MediaItem.fromUri(url);
+        MediaItem mediaItem= MediaItem.fromUri(vidURL);
         player.setMediaItem(mediaItem);
         player.prepare();
         player.setPlayWhenReady(true);
@@ -126,6 +128,13 @@ public class Candidate2Fragment extends Fragment {
     {
         super.onViewCreated(view, savedInstanceState);
 
+
+    }
+    public void setVidURL(String url){
+        this.vidURL=url;
+    }
+    public String getEditText(){
+        return point.getText().toString();
 
     }
 }

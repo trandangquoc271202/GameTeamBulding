@@ -7,12 +7,54 @@ public class Entry {
     private String ID;
     private String Entry_link;
     private String candidateID;
+    private String comp_id;
+
+    public String getComp_id() {
+        return comp_id;
+    }
+
+    public void setComp_id(String comp_id) {
+        this.comp_id = comp_id;
+    }
+
+    public Entry(String ID, String entry_link, String candidateID, String comp_id, String competitionID, String uploadTime, String reviewID, boolean win, int vote) {
+        this.ID = ID;
+        Entry_link = entry_link;
+        this.candidateID = candidateID;
+        this.comp_id = comp_id;
+        this.competitionID = competitionID;
+        this.uploadTime = uploadTime;
+        this.reviewID = reviewID;
+        this.win = win;
+        this.vote = vote;
+    }
+
     private String competitionID;
     private String uploadTime;
     // review ID is added later when s/o do evaluate this entry of a competition
     private String reviewID;
     private Map<String, Object> map;
     private boolean win;
+    private int vote;
+
+    public Entry(String ID, String entry_link, String candidateID, String competitionID, String uploadTime, String reviewID, boolean win, int vote) {
+        this.ID = ID;
+        Entry_link = entry_link;
+        this.candidateID = candidateID;
+        this.competitionID = competitionID;
+        this.uploadTime = uploadTime;
+        this.reviewID = reviewID;
+        this.win = win;
+        this.vote = vote;
+    }
+
+    public int getVote() {
+        return vote;
+    }
+
+    public void setVote(int vote) {
+        this.vote = vote;
+    }
 
     public boolean isWin() {
         return win;
@@ -101,7 +143,21 @@ public class Entry {
         map.put("COMPETITION_ID",competitionID);
         map.put("UPLOAD_TIME",uploadTime);
         map.put("REVIEW","");
+        map.put("WIN",win);
+        map.put("VOTE",vote);
+        return map;
+    }
+    public Map<String, Object> getNewMap() {
+        map.put("ENTRY_ID",ID);
+        map.put("CANDIDATE_ID",candidateID);
+        map.put("ENTRY_LINK",Entry_link);
+        map.put("COMPETITION_ID",competitionID);
+        map.put("UPLOAD_TIME",uploadTime);
+        map.put("REVIEW","");
         map.put("WIN",false);
+        map.put("VOTE","0");
+        map.put("POINT","0");
+
         return map;
     }
 }

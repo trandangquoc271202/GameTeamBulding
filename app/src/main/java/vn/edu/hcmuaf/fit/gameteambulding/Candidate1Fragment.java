@@ -31,7 +31,8 @@ import butterknife.Unbinder;
  */
 public class Candidate1Fragment extends Fragment {
     private ExoPlayer player;
-    @BindView(R.id.evaluation_save_btn) Button save;
+    String vidURL;
+
     @BindView(R.id.point_evaluate_editText)
     EditText point;
     @BindView(R.id.styledPlayerView2) StyledPlayerView styledPlayerView
@@ -44,8 +45,8 @@ public class Candidate1Fragment extends Fragment {
     public Candidate1Fragment() {
         // Required empty public constructor
     }
-    public Candidate1Fragment(List<CriterionItem> l) {
-
+    public Candidate1Fragment(String url) {
+        this.vidURL=url;
     }
 
     public static Candidate1Fragment newInstance() {
@@ -69,6 +70,7 @@ public class Candidate1Fragment extends Fragment {
         unbinder = ButterKnife.bind(this, rootView);
 
         getPlayer();
+
         point.addTextChangedListener(new TextWatcher() {
             boolean _ignore = false;
             @Override
@@ -93,14 +95,14 @@ public class Candidate1Fragment extends Fragment {
                             s.replace(0,s.length(),s.subSequence(s.length()-1,s.length()));
                         }
                     }
-                    if (i>10){
+                    if (i>=10){
                         s.replace(0,s.length(),"10");
                     }
                     if (i<0){
                         s.replace(0,s.length(),"0");
                     }
                     point.setText(s);
-                    save.setEnabled(true);
+
                     _ignore=false;
                 }
                 }
@@ -110,13 +112,13 @@ public class Candidate1Fragment extends Fragment {
     }
     private void getPlayer() {
         // URL of the video to stream
-        String videoURL = "https://www.youtube.com/watch?v=3tmd-ClpJxA";
+
         if (getContext()!=null){
             player= new ExoPlayer.Builder(getContext()).build();
         }
 
         styledPlayerView.setPlayer(player);
-        MediaItem mediaItem= MediaItem.fromUri(url);
+        MediaItem mediaItem= MediaItem.fromUri(vidURL);
         player.setMediaItem(mediaItem);
         player.prepare();
         player.setPlayWhenReady(true);
@@ -131,4 +133,15 @@ public class Candidate1Fragment extends Fragment {
 
 
     }
+    public  void setVidURL(String url){
+        this.vidURL=url;
+    }
+    public ExoPlayer getExoPlayer(){
+       return player;
+    }
+    public String getEditText(){
+        return point.getText().toString();
+
+    }
+
 }

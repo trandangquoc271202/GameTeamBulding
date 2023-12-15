@@ -12,7 +12,7 @@
         android:theme="@style/Theme.GameTeamBulding"
         tools:targetApi="31">
         <activity
-            android:name=".HomeActivity"
+            android:name=".EvaluateView"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,7 +41,7 @@
             android:exported="false"
             android:theme="@style/Theme.Design.Light.NoActionBar" />
         <activity
-            android:name=".UploadView"
+            android:name=".HomeActivity"
             android:exported="true"
             android:label="@string/app_name" />
         <activity
@@ -55,6 +55,9 @@
             android:exported="true" />
         <activity
             android:name=".ui.viewresult.ViewCompetition"
+            android:exported="true" />
+        <activity
+            android:name=".UploadView"
             android:exported="true" />
     </application>
 
