@@ -4,4 +4,5 @@ import vn.edu.hcmuaf.fit.gameteambulding.Model.Competition;
 
 public interface IClickItemUserListener {
     void onClickItemUser(Competition competition);
+
 }

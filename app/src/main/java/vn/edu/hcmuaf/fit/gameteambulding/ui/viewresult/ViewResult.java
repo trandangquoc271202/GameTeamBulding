@@ -1,5 +1,6 @@
 package vn.edu.hcmuaf.fit.gameteambulding.ui.viewresult;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +25,7 @@ import vn.edu.hcmuaf.fit.gameteambulding.R;
 public class ViewResult extends AppCompatActivity {
 
     private View back;
-    private CompetitionUserAdapter competitionUserAdapter;
+    TextView view_detail1, view_detail2;
     Competition competition;
     TextView timeStart, timeEnd, name1, name2, totalPoint1, totalPoint2, textViewResult1, textViewResult2;
     ImageView img1, img2;
@@ -46,6 +47,8 @@ public class ViewResult extends AppCompatActivity {
         textViewResult1 = findViewById(R.id.textViewResult1);
         textViewResult2 = findViewById(R.id.textViewResult2);
         back = findViewById(R.id.back);
+        view_detail1 = findViewById(R.id.view_detail1);
+        view_detail2 = findViewById(R.id.view_detail2);
         back();
         initializeFirebase();
 
@@ -65,40 +68,8 @@ public class ViewResult extends AppCompatActivity {
         }
 
 
-//        TextView viewDetail1 = findViewById(R.id.view_detail1);
-//        viewDetail1.setOnClickListener(view -> {
-//            // Handle click event and pass necessary data to the new activity
-//            Intent intent = new Intent(ViewResult.this, DetailActivity.class);
-//            intent.putExtra("USER_ID", competition.getUser1().getUserId());
-//            startActivity(intent);
-//        });
-//
-//        // Set click listener for "view_detail2" TextView
-//        TextView viewDetail2 = findViewById(R.id.view_detail2);
-//        viewDetail2.setOnClickListener(view -> {
-//            // Handle click event and pass necessary data to the new activity
-//            Intent intent = new Intent(ViewResult.this, DetailActivity.class);
-//            intent.putExtra("USER_ID", competition.getUser2().getUserId());
-//            startActivity(intent);
-//        });
     }
 
-    private void updateUI() {
-
-        // Update other UI elements with competition data
-
-        // Move your existing UI update code here
-        if (competition != null) {
-            totalPoint1.setText(competition.getUser1().getTotalScore() + "");
-            totalPoint2.setText(competition.getUser2().getTotalScore() + "");
-            textViewResult1.setText(competition.getUser1().getResult());
-            textViewResult2.setText(competition.getUser2().getResult());
-            img1.setImageResource(competition.getUser1().getResult().equals("Thua") ? R.drawable.lose : R.drawable.win);
-            img2.setImageResource(competition.getUser2().getResult().equals("Thua") ? R.drawable.lose : R.drawable.win);
-        } else {
-            Log.e("ViewResult", "Competition object is null");
-        }
-    }
 
     private void initializeFirebase() {
         // No change needed, already correct
@@ -118,9 +89,15 @@ public class ViewResult extends AppCompatActivity {
                     CompetitionUser user1 = document.toObject(CompetitionUser.class);
                     CompetitionUser user2 = document2.toObject(CompetitionUser.class);
 
+                    if (user1 != null) {
+                        user1.setDocumentId(document.getId());
+                        competition.setUser1(user1);
+                    }
+                    if (user2 != null) {
 
-                    if (user1 != null) competition.setUser1(user1);
-                    if (user2 != null) competition.setUser2(user2);
+                        user2.setDocumentId(document2.getId());
+                        competition.setUser2(user2);
+                    }
 
                     Log.i("ViewResult", "fetchAndSetUserInformation3: " + competition);
 
@@ -151,18 +128,34 @@ public class ViewResult extends AppCompatActivity {
 
                     if (user1 != null) competition.getUser1().setUserInfo(user1);
                     if (user2 != null) competition.getUser2().setUserInfo(user2);
+
                     if (competition.getUser1().getUserInfo() != null && competition.getUser2().getUserInfo() != null) {
-                                timeStart.setText("Thời gian bắt đầu: "+competition.getStartAt());
-        timeEnd.setText("Thời gian kết thúc: "+competition.getEndAt());
-                        totalPoint1.setText("Tổng kết điểm: "+competition.getUser1().getTotalScore() + "");
-                        name1.setText("Họ và Tên: "+competition.getUser1().getUserInfo().getUsername());
-                        name2.setText("Họ và Tên: "+competition.getUser2().getUserInfo().getUsername());
-                        totalPoint2.setText("Tổng kết điểm: "+ competition.getUser2().getTotalScore() + "");
-                        textViewResult1.setText("Kết quả: "+competition.getUser1().getResult());
-                        textViewResult2.setText("Kết quả: "+competition.getUser2().getResult());
+                        timeStart.setText("Thời gian bắt đầu: " + competition.getStartAt());
+                        timeEnd.setText("Thời gian kết thúc: " + competition.getEndAt());
+                        totalPoint1.setText("Tổng kết điểm: " + competition.getUser1().getTotalScore() + "");
+                        name1.setText("Họ và Tên: " + competition.getUser1().getUserInfo().getUsername());
+                        name2.setText("Họ và Tên: " + competition.getUser2().getUserInfo().getUsername());
+                        totalPoint2.setText("Tổng kết điểm: " + competition.getUser2().getTotalScore() + "");
+                        textViewResult1.setText("Kết quả: " + competition.getUser1().getResult());
+                        textViewResult2.setText("Kết quả: " + competition.getUser2().getResult());
                         img1.setImageResource(competition.getUser1().getResult().equalsIgnoreCase("Thua") ? R.drawable.lose : R.drawable.win);
                         img2.setImageResource(competition.getUser2().getResult().equalsIgnoreCase("Thua") ? R.drawable.lose : R.drawable.win);
-
+                        view_detail1.setOnClickListener(view -> {
+                            Intent intent = new Intent(ViewResult.this, ViewResultDetail.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("USER2", competition);
+                            bundle.putString("USER_ID", "USER1");
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        });
+                        view_detail2.setOnClickListener(view -> {
+                            Intent intent = new Intent(ViewResult.this, ViewResultDetail.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("USER2", competition);
+                            bundle.putString("USER_ID", "USER2");
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        });
                     }
                 }
             } else {

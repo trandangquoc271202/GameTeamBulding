@@ -10,14 +10,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:layout_marginLeft="10dp"
         android:background="@drawable/border_result"
         android:backgroundTint="#CBE3E0">
 
         <LinearLayout
             android:id="@+id/info"
-            android:layout_width="230dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="20dp"
@@ -27,11 +27,11 @@
 
             <TextView
                 android:id="@+id/tv_name1"
-                android:layout_width="wrap_content"
+                android:layout_width="230dp"
                 android:layout_height="wrap_content"
                 android:text="Cuộc thi: Nhảy tự do"
                 android:textColor="#000000"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_code"
@@ -44,14 +44,15 @@
 
         <TextView
             android:id="@+id/button_view"
-            android:layout_width="wrap_content"
+
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/info"
             android:text="@string/xem_chi_tiet"
             android:textAllCaps="false"
             android:textColor="#30D040"
-            android:textSize="20dp" />
+            android:textSize="18dp" />
 
 
     </RelativeLayout>

@@ -1,14 +1,62 @@
 package vn.edu.hcmuaf.fit.gameteambulding.Model;
 
-public class CompetitionUser {
+import java.util.ArrayList;
+import java.util.List;
+
+public class CompetitionUser implements java.io.Serializable {
     private String criteria;
     private String evaluate;
     private String result;
-    private double totalScore;
-    private int totalVote;
+    private Long totalScore;
+    private Long totalVote;
     private String userId;
-
+    private List<CompetitionReviewUser> competitionReviewUsers;
     private UserInfo userInfo;
+
+    private String documentId;
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
+    }
+
+    public void add(CompetitionReviewUser competitionReviewUser) {
+        if (this.competitionReviewUsers == null)
+            this.competitionReviewUsers = new ArrayList<>();
+        this.competitionReviewUsers.add(competitionReviewUser);
+    }
+
+    public String totalScore() {
+        double totalScore = 0L;
+        for (CompetitionReviewUser competitionReviewUser : competitionReviewUsers
+        ) {
+            if (competitionReviewUser.getScore() != 0)
+                totalScore += competitionReviewUser.getScore();
+
+        }
+        return String.valueOf(totalScore);
+    }
+
+    public String totalVote() {
+        return String.valueOf(competitionReviewUsers.size());
+    }
+
+    public CompetitionUser(String criteria, String evaluate, String result, Long totalScore, Long totalVote, String userId, UserInfo userInfo) {
+        this.criteria = criteria;
+        this.evaluate = evaluate;
+        this.result = result;
+        this.totalScore = totalScore;
+        this.totalVote = totalVote;
+        this.userId = userId;
+        this.competitionReviewUsers = new ArrayList<>();
+        this.userInfo = userInfo;
+    }
+
+    public CompetitionUser() {
+    }
 
     public String getCriteria() {
         return criteria;
@@ -17,26 +65,6 @@ public class CompetitionUser {
     public void setCriteria(String criteria) {
         this.criteria = criteria;
     }
-
-    public UserInfo getUserInfo() {
-        return userInfo;
-    }
-
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
-    }
-
-    // Constructor
-    public CompetitionUser(String criteria, String evaluate, String result,
-                           double totalScore, int totalVote, String userId) {
-        this.criteria = criteria;
-        this.evaluate = evaluate;
-        this.result = result;
-        this.totalScore = totalScore;
-        this.totalVote = totalVote;
-        this.userId = userId;
-    }
-
 
     public String getEvaluate() {
         return evaluate;
@@ -54,19 +82,19 @@ public class CompetitionUser {
         this.result = result;
     }
 
-    public double getTotalScore() {
+    public Long getTotalScore() {
         return totalScore;
     }
 
-    public void setTotalScore(double totalScore) {
+    public void setTotalScore(Long totalScore) {
         this.totalScore = totalScore;
     }
 
-    public int getTotalVote() {
+    public Long getTotalVote() {
         return totalVote;
     }
 
-    public void setTotalVote(int totalVote) {
+    public void setTotalVote(Long totalVote) {
         this.totalVote = totalVote;
     }
 
@@ -78,20 +106,19 @@ public class CompetitionUser {
         this.userId = userId;
     }
 
-    // Getter and Setter methods (generated automatically or manually)
-    public CompetitionUser() {
+    public List<CompetitionReviewUser> getCompetitionReviewUsers() {
+        return competitionReviewUsers;
     }
 
+    public void setCompetitionReviewUsers(List<CompetitionReviewUser> competitionReviewUsers) {
+        this.competitionReviewUsers = competitionReviewUsers;
+    }
 
-    @Override
-    public String toString() {
-        return "CompetitionUser{" +
-                "criteria='" + criteria + '\'' +
-                ", evaluate='" + evaluate + '\'' +
-                ", result='" + result + '\'' +
-                ", totalScore=" + totalScore +
-                ", totalVote=" + totalVote +
-                ", userId='" + userId + '\'' +
-                '}';
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 }

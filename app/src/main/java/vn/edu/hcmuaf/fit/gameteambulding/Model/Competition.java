@@ -149,6 +149,7 @@ public class Competition extends ViewModel implements Serializable {
         this.totalVote = totalVote;
     }
 
+
     public Competition() {
     }
 }

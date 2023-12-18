@@ -94,6 +94,7 @@ public class ViewCompetition extends AppCompatActivity {
                     Competition competition = document.toObject(Competition.class);
                     if (competition != null) {
                         listCompetition.add(competition);
+                        Log.i("dsadddddddddddddddddddddddddddd", "getAllDataFromFirestore: " + listCompetition);
                     }
                 }
                 // Notify the adapter that the data set has changed

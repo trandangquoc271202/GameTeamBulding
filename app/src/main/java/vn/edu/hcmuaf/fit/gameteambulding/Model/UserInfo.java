@@ -2,7 +2,7 @@ package vn.edu.hcmuaf.fit.gameteambulding.Model;
 
 import java.time.LocalDateTime;
 
-public class UserInfo {
+public class UserInfo implements java.io.Serializable {
     private String address;
     private boolean isAdmin;
     private String birthday;
@@ -11,16 +11,7 @@ public class UserInfo {
     private String password;
     private String phone;
     private String username;
-    private String documentId;
 
-    public String getDocumentId() {
-        return documentId;
-    }
-
-
-    public void setDocumentId(String documentId) {
-        this.documentId = documentId;
-    }
 
 
     // Constructor
